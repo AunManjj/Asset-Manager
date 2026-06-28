@@ -1,0 +1,40 @@
+import { Router, type IRouter } from "express";
+import healthRouter from "./health";
+import authRouter from "./auth";
+import usersRouter from "./users";
+import clientsRouter from "./clients";
+import campaignsRouter from "./campaigns";
+import adsetsRouter from "./adsets";
+import adsRouter from "./ads";
+import insightsRouter from "./insights";
+import setterActivitiesRouter from "./setter-activities";
+import closerActivitiesRouter from "./closer-activities";
+import revenueRouter from "./revenue";
+import reportsRouter from "./reports";
+import aiInsightsRouter from "./ai-insights";
+import notificationsRouter from "./notifications";
+import slackRouter from "./slack";
+import dashboardRouter from "./dashboard";
+import metaRouter from "./meta";
+
+const router: IRouter = Router();
+
+router.use(healthRouter);
+router.use(authRouter);
+router.use(usersRouter);
+router.use(clientsRouter);
+router.use(campaignsRouter);
+router.use(adsetsRouter);
+router.use(adsRouter);
+router.use(insightsRouter);
+router.use(setterActivitiesRouter);
+router.use(closerActivitiesRouter);
+router.use(revenueRouter);
+router.use(reportsRouter);
+router.use(aiInsightsRouter);
+router.use(notificationsRouter);
+router.use(slackRouter);
+router.use(dashboardRouter);
+router.use(metaRouter);
+
+export default router;

@@ -1,0 +1,2296 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: Agency Dashboard API
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: auth
+    description: Authentication operations
+  - name: users
+    description: User management
+  - name: clients
+    description: Client management
+  - name: campaigns
+    description: Campaign management
+  - name: adsets
+    description: Ad set management
+  - name: ads
+    description: Ad management
+  - name: insights
+    description: Ad insights
+  - name: setter-activities
+    description: Setter activity tracking
+  - name: closer-activities
+    description: Closer activity tracking
+  - name: revenue
+    description: Revenue tracking
+  - name: reports
+    description: Reports
+  - name: ai-insights
+    description: AI-generated insights
+  - name: notifications
+    description: Notifications
+  - name: slack
+    description: Slack integration
+  - name: dashboard
+    description: Dashboard summary endpoints
+  - name: meta
+    description: Meta Ads integration
+
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+
+  # Auth
+  /auth/login:
+    post:
+      operationId: login
+      tags: [auth]
+      summary: Login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginInput"
+      responses:
+        "200":
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "401":
+          description: Invalid credentials
+
+  /auth/me:
+    get:
+      operationId: getMe
+      tags: [auth]
+      summary: Get current user
+      responses:
+        "200":
+          description: Current user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "401":
+          description: Unauthorized
+
+  /auth/logout:
+    post:
+      operationId: logout
+      tags: [auth]
+      summary: Logout
+      responses:
+        "200":
+          description: Logged out
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  # Users
+  /users:
+    get:
+      operationId: listUsers
+      tags: [users]
+      summary: List all users
+      responses:
+        "200":
+          description: List of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+    post:
+      operationId: createUser
+      tags: [users]
+      summary: Create a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserInput"
+      responses:
+        "201":
+          description: User created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+
+  /users/{id}:
+    get:
+      operationId: getUser
+      tags: [users]
+      summary: Get a user
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: User
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+    patch:
+      operationId: updateUser
+      tags: [users]
+      summary: Update a user
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserUpdate"
+      responses:
+        "200":
+          description: User updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+    delete:
+      operationId: deleteUser
+      tags: [users]
+      summary: Delete a user
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: User deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  # Clients
+  /clients:
+    get:
+      operationId: listClients
+      tags: [clients]
+      summary: List clients
+      responses:
+        "200":
+          description: List of clients
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Client"
+    post:
+      operationId: createClient
+      tags: [clients]
+      summary: Create a client
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ClientInput"
+      responses:
+        "201":
+          description: Client created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Client"
+
+  /clients/{id}:
+    get:
+      operationId: getClient
+      tags: [clients]
+      summary: Get a client
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Client
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Client"
+    patch:
+      operationId: updateClient
+      tags: [clients]
+      summary: Update a client
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ClientUpdate"
+      responses:
+        "200":
+          description: Client updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Client"
+    delete:
+      operationId: deleteClient
+      tags: [clients]
+      summary: Delete a client
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Client deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  # Campaigns
+  /campaigns:
+    get:
+      operationId: listCampaigns
+      tags: [campaigns]
+      summary: List campaigns
+      parameters:
+        - name: clientId
+          in: query
+          schema:
+            type: ["integer", "null"]
+        - name: status
+          in: query
+          schema:
+            type: ["string", "null"]
+      responses:
+        "200":
+          description: List of campaigns
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Campaign"
+    post:
+      operationId: createCampaign
+      tags: [campaigns]
+      summary: Create a campaign
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CampaignInput"
+      responses:
+        "201":
+          description: Campaign created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Campaign"
+
+  /campaigns/{id}:
+    get:
+      operationId: getCampaign
+      tags: [campaigns]
+      summary: Get a campaign
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Campaign
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Campaign"
+    patch:
+      operationId: updateCampaign
+      tags: [campaigns]
+      summary: Update a campaign
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CampaignUpdate"
+      responses:
+        "200":
+          description: Campaign updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Campaign"
+    delete:
+      operationId: deleteCampaign
+      tags: [campaigns]
+      summary: Delete a campaign
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Campaign deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /campaigns/{id}/pause:
+    post:
+      operationId: pauseCampaign
+      tags: [campaigns]
+      summary: Pause a campaign
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Campaign paused
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Campaign"
+
+  /campaigns/{id}/resume:
+    post:
+      operationId: resumeCampaign
+      tags: [campaigns]
+      summary: Resume a campaign
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Campaign resumed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Campaign"
+
+  # Adsets
+  /adsets:
+    get:
+      operationId: listAdsets
+      tags: [adsets]
+      summary: List ad sets
+      parameters:
+        - name: campaignId
+          in: query
+          schema:
+            type: ["integer", "null"]
+      responses:
+        "200":
+          description: List of ad sets
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Adset"
+    post:
+      operationId: createAdset
+      tags: [adsets]
+      summary: Create an ad set
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdsetInput"
+      responses:
+        "201":
+          description: Ad set created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Adset"
+
+  /adsets/{id}:
+    get:
+      operationId: getAdset
+      tags: [adsets]
+      summary: Get an ad set
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Ad set
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Adset"
+    patch:
+      operationId: updateAdset
+      tags: [adsets]
+      summary: Update an ad set
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdsetUpdate"
+      responses:
+        "200":
+          description: Ad set updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Adset"
+    delete:
+      operationId: deleteAdset
+      tags: [adsets]
+      summary: Delete an ad set
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Ad set deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  # Ads
+  /ads:
+    get:
+      operationId: listAds
+      tags: [ads]
+      summary: List ads
+      parameters:
+        - name: adsetId
+          in: query
+          schema:
+            type: ["integer", "null"]
+      responses:
+        "200":
+          description: List of ads
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Ad"
+    post:
+      operationId: createAd
+      tags: [ads]
+      summary: Create an ad
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdInput"
+      responses:
+        "201":
+          description: Ad created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Ad"
+
+  /ads/{id}:
+    get:
+      operationId: getAd
+      tags: [ads]
+      summary: Get an ad
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Ad
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Ad"
+    patch:
+      operationId: updateAd
+      tags: [ads]
+      summary: Update an ad
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdUpdate"
+      responses:
+        "200":
+          description: Ad updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Ad"
+    delete:
+      operationId: deleteAd
+      tags: [ads]
+      summary: Delete an ad
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Ad deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  # Insights
+  /insights:
+    get:
+      operationId: listInsights
+      tags: [insights]
+      summary: List ad insights
+      parameters:
+        - name: campaignId
+          in: query
+          schema:
+            type: ["integer", "null"]
+        - name: adId
+          in: query
+          schema:
+            type: ["integer", "null"]
+        - name: dateFrom
+          in: query
+          schema:
+            type: ["string", "null"]
+        - name: dateTo
+          in: query
+          schema:
+            type: ["string", "null"]
+      responses:
+        "200":
+          description: List of insights
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Insight"
+
+  /insights/summary:
+    get:
+      operationId: getInsightsSummary
+      tags: [insights]
+      summary: Get aggregated insights summary
+      responses:
+        "200":
+          description: Insights summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InsightsSummary"
+
+  # Setter Activities
+  /setter-activities:
+    get:
+      operationId: listSetterActivities
+      tags: [setter-activities]
+      summary: List setter activities
+      parameters:
+        - name: setterId
+          in: query
+          schema:
+            type: ["integer", "null"]
+        - name: dateFrom
+          in: query
+          schema:
+            type: ["string", "null"]
+        - name: dateTo
+          in: query
+          schema:
+            type: ["string", "null"]
+      responses:
+        "200":
+          description: List of setter activities
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SetterActivity"
+    post:
+      operationId: createSetterActivity
+      tags: [setter-activities]
+      summary: Log setter activity
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SetterActivityInput"
+      responses:
+        "201":
+          description: Setter activity created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SetterActivity"
+
+  /setter-activities/stats:
+    get:
+      operationId: getSetterStats
+      tags: [setter-activities]
+      summary: Get setter KPI stats
+      responses:
+        "200":
+          description: Setter stats
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SetterStats"
+
+  /setter-activities/{id}:
+    patch:
+      operationId: updateSetterActivity
+      tags: [setter-activities]
+      summary: Update setter activity
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SetterActivityUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SetterActivity"
+    delete:
+      operationId: deleteSetterActivity
+      tags: [setter-activities]
+      summary: Delete setter activity
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  # Closer Activities
+  /closer-activities:
+    get:
+      operationId: listCloserActivities
+      tags: [closer-activities]
+      summary: List closer activities
+      parameters:
+        - name: closerId
+          in: query
+          schema:
+            type: ["integer", "null"]
+        - name: dateFrom
+          in: query
+          schema:
+            type: ["string", "null"]
+        - name: dateTo
+          in: query
+          schema:
+            type: ["string", "null"]
+      responses:
+        "200":
+          description: List of closer activities
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CloserActivity"
+    post:
+      operationId: createCloserActivity
+      tags: [closer-activities]
+      summary: Log closer activity
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CloserActivityInput"
+      responses:
+        "201":
+          description: Closer activity created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloserActivity"
+
+  /closer-activities/stats:
+    get:
+      operationId: getCloserStats
+      tags: [closer-activities]
+      summary: Get closer KPI stats
+      responses:
+        "200":
+          description: Closer stats
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CloserStats"
+
+  /closer-activities/{id}:
+    patch:
+      operationId: updateCloserActivity
+      tags: [closer-activities]
+      summary: Update closer activity
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CloserActivityUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CloserActivity"
+    delete:
+      operationId: deleteCloserActivity
+      tags: [closer-activities]
+      summary: Delete closer activity
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  # Revenue
+  /revenue:
+    get:
+      operationId: listRevenue
+      tags: [revenue]
+      summary: List revenue records
+      parameters:
+        - name: clientId
+          in: query
+          schema:
+            type: ["integer", "null"]
+        - name: dateFrom
+          in: query
+          schema:
+            type: ["string", "null"]
+        - name: dateTo
+          in: query
+          schema:
+            type: ["string", "null"]
+      responses:
+        "200":
+          description: List of revenue records
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Revenue"
+    post:
+      operationId: createRevenue
+      tags: [revenue]
+      summary: Create a revenue record
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RevenueInput"
+      responses:
+        "201":
+          description: Revenue record created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Revenue"
+
+  /revenue/summary:
+    get:
+      operationId: getRevenueSummary
+      tags: [revenue]
+      summary: Get revenue summary and trends
+      responses:
+        "200":
+          description: Revenue summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RevenueSummary"
+
+  /revenue/{id}:
+    patch:
+      operationId: updateRevenue
+      tags: [revenue]
+      summary: Update a revenue record
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RevenueUpdate"
+      responses:
+        "200":
+          description: Revenue updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Revenue"
+    delete:
+      operationId: deleteRevenue
+      tags: [revenue]
+      summary: Delete revenue record
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  # Reports
+  /reports:
+    get:
+      operationId: listReports
+      tags: [reports]
+      summary: List reports
+      responses:
+        "200":
+          description: List of reports
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Report"
+    post:
+      operationId: createReport
+      tags: [reports]
+      summary: Generate a report
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReportInput"
+      responses:
+        "201":
+          description: Report created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Report"
+
+  /reports/{id}:
+    get:
+      operationId: getReport
+      tags: [reports]
+      summary: Get a report
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Report
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Report"
+    delete:
+      operationId: deleteReport
+      tags: [reports]
+      summary: Delete a report
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Report deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  # AI Insights
+  /ai-insights:
+    get:
+      operationId: listAiInsights
+      tags: [ai-insights]
+      summary: List AI insights
+      parameters:
+        - name: clientId
+          in: query
+          schema:
+            type: ["integer", "null"]
+        - name: type
+          in: query
+          schema:
+            type: ["string", "null"]
+      responses:
+        "200":
+          description: List of AI insights
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AiInsight"
+    post:
+      operationId: generateAiInsight
+      tags: [ai-insights]
+      summary: Generate an AI insight
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AiInsightRequest"
+      responses:
+        "201":
+          description: AI insight generated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AiInsight"
+
+  /ai-insights/{id}:
+    get:
+      operationId: getAiInsight
+      tags: [ai-insights]
+      summary: Get an AI insight
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: AI Insight
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AiInsight"
+    delete:
+      operationId: deleteAiInsight
+      tags: [ai-insights]
+      summary: Delete an AI insight
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  # Notifications
+  /notifications:
+    get:
+      operationId: listNotifications
+      tags: [notifications]
+      summary: List notifications
+      responses:
+        "200":
+          description: List of notifications
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Notification"
+
+  /notifications/{id}/read:
+    post:
+      operationId: markNotificationRead
+      tags: [notifications]
+      summary: Mark notification as read
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Notification marked read
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Notification"
+
+  /notifications/read-all:
+    post:
+      operationId: markAllNotificationsRead
+      tags: [notifications]
+      summary: Mark all notifications as read
+      responses:
+        "200":
+          description: All marked read
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  # Slack
+  /slack/logs:
+    get:
+      operationId: listSlackLogs
+      tags: [slack]
+      summary: List Slack message logs
+      responses:
+        "200":
+          description: List of Slack logs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SlackLog"
+
+  /slack/send:
+    post:
+      operationId: sendSlackMessage
+      tags: [slack]
+      summary: Send a Slack message
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SlackMessageInput"
+      responses:
+        "200":
+          description: Message sent
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SlackLog"
+
+  # Dashboard Summary
+  /dashboard/summary:
+    get:
+      operationId: getDashboardSummary
+      tags: [dashboard]
+      summary: Get overall dashboard summary
+      responses:
+        "200":
+          description: Dashboard summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardSummary"
+
+  /dashboard/activity-feed:
+    get:
+      operationId: getActivityFeed
+      tags: [dashboard]
+      summary: Get recent activity feed
+      responses:
+        "200":
+          description: Activity feed
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ActivityFeedItem"
+
+  /dashboard/performance:
+    get:
+      operationId: getPerformanceMetrics
+      tags: [dashboard]
+      summary: Get performance metrics over time
+      parameters:
+        - name: period
+          in: query
+          schema:
+            type: string
+            enum: [7d, 30d, 90d]
+            default: 30d
+      responses:
+        "200":
+          description: Performance metrics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PerformanceMetrics"
+
+  /meta/config:
+    get:
+      operationId: getMetaConfig
+      tags: [meta]
+      summary: Get Meta OAuth configuration
+      responses:
+        "200":
+          description: Meta config
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MetaConfig"
+
+  /meta/status/{clientId}:
+    get:
+      operationId: getMetaStatus
+      tags: [meta]
+      summary: Get Meta connection status for a client
+      parameters:
+        - name: clientId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Meta status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MetaStatus"
+
+  /meta/campaigns/{clientId}:
+    get:
+      operationId: getMetaCampaigns
+      tags: [meta]
+      summary: Fetch campaigns from Meta Ads API
+      parameters:
+        - name: clientId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Meta campaigns
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MetaCampaignsResponse"
+
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+
+    MessageResponse:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
+
+    # Auth
+    LoginInput:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+
+    AuthResponse:
+      type: object
+      required: [token, user]
+      properties:
+        token:
+          type: string
+        user:
+          $ref: "#/components/schemas/User"
+
+    # User
+    User:
+      type: object
+      required: [id, email, name, role, createdAt]
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+        name:
+          type: string
+        role:
+          type: string
+          enum: [admin, client, setter, closer]
+        clientId:
+          type: ["integer", "null"]
+        avatarUrl:
+          type: ["string", "null"]
+        isActive:
+          type: boolean
+        createdAt:
+          type: string
+
+    UserInput:
+      type: object
+      required: [email, name, role, password]
+      properties:
+        email:
+          type: string
+        name:
+          type: string
+        role:
+          type: string
+          enum: [admin, client, setter, closer]
+        password:
+          type: string
+        clientId:
+          type: ["integer", "null"]
+        avatarUrl:
+          type: ["string", "null"]
+
+    UserUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        role:
+          type: string
+          enum: [admin, client, setter, closer]
+        clientId:
+          type: ["integer", "null"]
+        avatarUrl:
+          type: ["string", "null"]
+        isActive:
+          type: boolean
+
+    # Client
+    Client:
+      type: object
+      required: [id, name, industry, status, createdAt]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        industry:
+          type: string
+        contactName:
+          type: ["string", "null"]
+        contactEmail:
+          type: ["string", "null"]
+        contactPhone:
+          type: ["string", "null"]
+        logoUrl:
+          type: ["string", "null"]
+        status:
+          type: string
+          enum: [active, inactive, prospect]
+        monthlyBudget:
+          type: ["number", "null"]
+        metaAdAccountId:
+          type: ["string", "null"]
+        metaAccessToken:
+          type: ["string", "null"]
+        notes:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+
+    ClientInput:
+      type: object
+      required: [name, industry]
+      properties:
+        name:
+          type: string
+        industry:
+          type: string
+        contactName:
+          type: string
+        contactEmail:
+          type: string
+        contactPhone:
+          type: string
+        logoUrl:
+          type: string
+        status:
+          type: string
+          enum: [active, inactive, prospect]
+        monthlyBudget:
+          type: number
+        metaAdAccountId:
+          type: string
+        metaAccessToken:
+          type: string
+        notes:
+          type: string
+
+    ClientUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        industry:
+          type: string
+        contactName:
+          type: string
+        contactEmail:
+          type: string
+        contactPhone:
+          type: string
+        logoUrl:
+          type: string
+        status:
+          type: string
+          enum: [active, inactive, prospect]
+        monthlyBudget:
+          type: number
+        metaAdAccountId:
+          type: string
+        metaAccessToken:
+          type: string
+        notes:
+          type: string
+
+    # Campaign
+    Campaign:
+      type: object
+      required: [id, name, clientId, status, objective, createdAt]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        clientId:
+          type: integer
+        clientName:
+          type: ["string", "null"]
+        metaCampaignId:
+          type: ["string", "null"]
+        status:
+          type: string
+          enum: [active, paused, completed, draft]
+        objective:
+          type: string
+        dailyBudget:
+          type: ["number", "null"]
+        totalBudget:
+          type: ["number", "null"]
+        startDate:
+          type: ["string", "null"]
+        endDate:
+          type: ["string", "null"]
+        spend:
+          type: ["number", "null"]
+        impressions:
+          type: ["integer", "null"]
+        clicks:
+          type: ["integer", "null"]
+        conversions:
+          type: ["integer", "null"]
+        roas:
+          type: ["number", "null"]
+        createdAt:
+          type: string
+
+    CampaignInput:
+      type: object
+      required: [name, clientId, objective]
+      properties:
+        name:
+          type: string
+        clientId:
+          type: integer
+        objective:
+          type: string
+        dailyBudget:
+          type: number
+        totalBudget:
+          type: number
+        startDate:
+          type: string
+        endDate:
+          type: string
+
+    CampaignUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        status:
+          type: string
+          enum: [active, paused, completed, draft]
+        objective:
+          type: string
+        dailyBudget:
+          type: number
+        totalBudget:
+          type: number
+        startDate:
+          type: string
+        endDate:
+          type: string
+
+    # Adset
+    Adset:
+      type: object
+      required: [id, name, campaignId, status, createdAt]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        campaignId:
+          type: integer
+        metaAdsetId:
+          type: ["string", "null"]
+        status:
+          type: string
+          enum: [active, paused, completed, draft]
+        dailyBudget:
+          type: ["number", "null"]
+        targeting:
+          type: ["string", "null"]
+        optimizationGoal:
+          type: ["string", "null"]
+        spend:
+          type: ["number", "null"]
+        impressions:
+          type: ["integer", "null"]
+        clicks:
+          type: ["integer", "null"]
+        createdAt:
+          type: string
+
+    AdsetInput:
+      type: object
+      required: [name, campaignId]
+      properties:
+        name:
+          type: string
+        campaignId:
+          type: integer
+        dailyBudget:
+          type: number
+        targeting:
+          type: string
+        optimizationGoal:
+          type: string
+
+    AdsetUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        status:
+          type: string
+          enum: [active, paused, completed, draft]
+        dailyBudget:
+          type: number
+        targeting:
+          type: string
+        optimizationGoal:
+          type: string
+
+    # Ad
+    Ad:
+      type: object
+      required: [id, name, adsetId, status, createdAt]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        adsetId:
+          type: integer
+        metaAdId:
+          type: ["string", "null"]
+        status:
+          type: string
+          enum: [active, paused, disapproved, draft]
+        headline:
+          type: ["string", "null"]
+        body:
+          type: ["string", "null"]
+        imageUrl:
+          type: ["string", "null"]
+        destinationUrl:
+          type: ["string", "null"]
+        spend:
+          type: ["number", "null"]
+        impressions:
+          type: ["integer", "null"]
+        clicks:
+          type: ["integer", "null"]
+        ctr:
+          type: ["number", "null"]
+        cpc:
+          type: ["number", "null"]
+        createdAt:
+          type: string
+
+    AdInput:
+      type: object
+      required: [name, adsetId]
+      properties:
+        name:
+          type: string
+        adsetId:
+          type: integer
+        headline:
+          type: string
+        body:
+          type: string
+        imageUrl:
+          type: string
+        destinationUrl:
+          type: string
+
+    AdUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        status:
+          type: string
+          enum: [active, paused, disapproved, draft]
+        headline:
+          type: string
+        body:
+          type: string
+        imageUrl:
+          type: string
+        destinationUrl:
+          type: string
+
+    # Insight
+    Insight:
+      type: object
+      required: [id, campaignId, date, spend, impressions, clicks, createdAt]
+      properties:
+        id:
+          type: integer
+        campaignId:
+          type: ["integer", "null"]
+        adId:
+          type: ["integer", "null"]
+        date:
+          type: string
+        spend:
+          type: number
+        impressions:
+          type: integer
+        clicks:
+          type: integer
+        conversions:
+          type: ["integer", "null"]
+        ctr:
+          type: ["number", "null"]
+        cpc:
+          type: ["number", "null"]
+        cpm:
+          type: ["number", "null"]
+        roas:
+          type: ["number", "null"]
+        reach:
+          type: ["integer", "null"]
+        frequency:
+          type: ["number", "null"]
+        createdAt:
+          type: string
+
+    InsightsSummary:
+      type: object
+      required: [totalSpend, totalImpressions, totalClicks, totalConversions, avgCtr, avgRoas, avgCpc]
+      properties:
+        totalSpend:
+          type: number
+        totalImpressions:
+          type: integer
+        totalClicks:
+          type: integer
+        totalConversions:
+          type: integer
+        avgCtr:
+          type: number
+        avgRoas:
+          type: number
+        avgCpc:
+          type: number
+
+    # Setter Activity
+    SetterActivity:
+      type: object
+      required: [id, setterId, date, outreachCount, callsBooked, showRate, createdAt]
+      properties:
+        id:
+          type: integer
+        setterId:
+          type: integer
+        setterName:
+          type: ["string", "null"]
+        date:
+          type: string
+        outreachCount:
+          type: integer
+        callsBooked:
+          type: integer
+        showRate:
+          type: number
+        responseRate:
+          type: ["number", "null"]
+        platform:
+          type: ["string", "null"]
+        notes:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+
+    SetterActivityInput:
+      type: object
+      required: [setterId, date, outreachCount, callsBooked, showRate]
+      properties:
+        setterId:
+          type: integer
+        date:
+          type: string
+        outreachCount:
+          type: integer
+        callsBooked:
+          type: integer
+        showRate:
+          type: number
+        responseRate:
+          type: number
+        platform:
+          type: string
+        notes:
+          type: string
+
+    SetterActivityUpdate:
+      type: object
+      properties:
+        outreachCount:
+          type: integer
+        callsBooked:
+          type: integer
+        showRate:
+          type: number
+        responseRate:
+          type: number
+        platform:
+          type: string
+        notes:
+          type: string
+
+    SetterStats:
+      type: object
+      required: [setterId, setterName, totalOutreach, totalCallsBooked, avgShowRate, period]
+      properties:
+        setterId:
+          type: integer
+        setterName:
+          type: string
+        totalOutreach:
+          type: integer
+        totalCallsBooked:
+          type: integer
+        avgShowRate:
+          type: number
+        avgResponseRate:
+          type: ["number", "null"]
+        period:
+          type: string
+
+    # Closer Activity
+    CloserActivity:
+      type: object
+      required: [id, closerId, date, callsTaken, dealsWon, revenue, closeRate, createdAt]
+      properties:
+        id:
+          type: integer
+        closerId:
+          type: integer
+        closerName:
+          type: ["string", "null"]
+        clientId:
+          type: ["integer", "null"]
+        date:
+          type: string
+        callsTaken:
+          type: integer
+        dealsWon:
+          type: integer
+        revenue:
+          type: number
+        closeRate:
+          type: number
+        avgDealSize:
+          type: ["number", "null"]
+        objections:
+          type: ["string", "null"]
+        notes:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+
+    CloserActivityInput:
+      type: object
+      required: [closerId, date, callsTaken, dealsWon, revenue, closeRate]
+      properties:
+        closerId:
+          type: integer
+        clientId:
+          type: integer
+        date:
+          type: string
+        callsTaken:
+          type: integer
+        dealsWon:
+          type: integer
+        revenue:
+          type: number
+        closeRate:
+          type: number
+        avgDealSize:
+          type: number
+        objections:
+          type: string
+        notes:
+          type: string
+
+    CloserActivityUpdate:
+      type: object
+      properties:
+        callsTaken:
+          type: integer
+        dealsWon:
+          type: integer
+        revenue:
+          type: number
+        closeRate:
+          type: number
+        avgDealSize:
+          type: number
+        objections:
+          type: string
+        notes:
+          type: string
+
+    CloserStats:
+      type: object
+      required: [closerId, closerName, totalCalls, totalDealsWon, totalRevenue, avgCloseRate, period]
+      properties:
+        closerId:
+          type: integer
+        closerName:
+          type: string
+        totalCalls:
+          type: integer
+        totalDealsWon:
+          type: integer
+        totalRevenue:
+          type: number
+        avgCloseRate:
+          type: number
+        avgDealSize:
+          type: ["number", "null"]
+        period:
+          type: string
+
+    # Revenue
+    Revenue:
+      type: object
+      required: [id, clientId, amount, type, date, createdAt]
+      properties:
+        id:
+          type: integer
+        clientId:
+          type: integer
+        clientName:
+          type: ["string", "null"]
+        closerId:
+          type: ["integer", "null"]
+        amount:
+          type: number
+        type:
+          type: string
+          enum: [new_deal, renewal, upsell, refund]
+        date:
+          type: string
+        description:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+
+    RevenueInput:
+      type: object
+      required: [clientId, amount, type, date]
+      properties:
+        clientId:
+          type: integer
+        closerId:
+          type: integer
+        amount:
+          type: number
+        type:
+          type: string
+          enum: [new_deal, renewal, upsell, refund]
+        date:
+          type: string
+        description:
+          type: string
+
+    RevenueUpdate:
+      type: object
+      properties:
+        amount:
+          type: number
+        type:
+          type: string
+          enum: [new_deal, renewal, upsell, refund]
+        date:
+          type: string
+        description:
+          type: string
+
+    RevenueSummary:
+      type: object
+      required: [totalRevenue, monthlyRevenue, revenueByType, revenueByMonth]
+      properties:
+        totalRevenue:
+          type: number
+        monthlyRevenue:
+          type: number
+        revenueGrowth:
+          type: number
+        revenueByType:
+          type: array
+          items:
+            $ref: "#/components/schemas/RevenueByType"
+        revenueByMonth:
+          type: array
+          items:
+            $ref: "#/components/schemas/RevenueByMonth"
+
+    RevenueByType:
+      type: object
+      required: [type, amount, count]
+      properties:
+        type:
+          type: string
+        amount:
+          type: number
+        count:
+          type: integer
+
+    RevenueByMonth:
+      type: object
+      required: [month, amount]
+      properties:
+        month:
+          type: string
+        amount:
+          type: number
+
+    # Report
+    Report:
+      type: object
+      required: [id, title, type, status, createdAt]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        type:
+          type: string
+          enum: [weekly, monthly, campaign, revenue, ai_summary]
+        clientId:
+          type: ["integer", "null"]
+        clientName:
+          type: ["string", "null"]
+        status:
+          type: string
+          enum: [pending, generating, ready, failed]
+        fileUrl:
+          type: ["string", "null"]
+        summary:
+          type: ["string", "null"]
+        dateFrom:
+          type: ["string", "null"]
+        dateTo:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+
+    ReportInput:
+      type: object
+      required: [title, type]
+      properties:
+        title:
+          type: string
+        type:
+          type: string
+          enum: [weekly, monthly, campaign, revenue, ai_summary]
+        clientId:
+          type: integer
+        dateFrom:
+          type: string
+        dateTo:
+          type: string
+
+    # AI Insight
+    AiInsight:
+      type: object
+      required: [id, type, content, createdAt]
+      properties:
+        id:
+          type: integer
+        clientId:
+          type: ["integer", "null"]
+        clientName:
+          type: ["string", "null"]
+        campaignId:
+          type: ["integer", "null"]
+        type:
+          type: string
+          enum: [campaign_summary, performance_analysis, weekly_insights, loss_debrief, call_coaching, revenue_analysis, recommendations]
+        content:
+          type: string
+        prompt:
+          type: ["string", "null"]
+        model:
+          type: string
+        createdAt:
+          type: string
+
+    AiInsightRequest:
+      type: object
+      required: [type]
+      properties:
+        type:
+          type: string
+          enum: [campaign_summary, performance_analysis, weekly_insights, loss_debrief, call_coaching, revenue_analysis, recommendations]
+        clientId:
+          type: integer
+        campaignId:
+          type: integer
+        context:
+          type: string
+
+    # Notification
+    Notification:
+      type: object
+      required: [id, title, message, type, isRead, createdAt]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        message:
+          type: string
+        type:
+          type: string
+          enum: [alert, info, warning, success]
+        isRead:
+          type: boolean
+        link:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+
+    # Slack
+    SlackLog:
+      type: object
+      required: [id, channel, message, status, createdAt]
+      properties:
+        id:
+          type: integer
+        channel:
+          type: string
+        message:
+          type: string
+        status:
+          type: string
+          enum: [sent, failed, pending]
+        triggeredBy:
+          type: ["string", "null"]
+        errorMessage:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+
+    SlackMessageInput:
+      type: object
+      required: [channel, message]
+      properties:
+        channel:
+          type: string
+        message:
+          type: string
+
+    # Dashboard
+    DashboardSummary:
+      type: object
+      required: [totalClients, activeClients, totalCampaigns, activeCampaigns, totalRevenue, monthlyRevenue, totalSpend, avgRoas, openNotifications]
+      properties:
+        totalClients:
+          type: integer
+        activeClients:
+          type: integer
+        totalCampaigns:
+          type: integer
+        activeCampaigns:
+          type: integer
+        totalRevenue:
+          type: number
+        monthlyRevenue:
+          type: number
+        totalSpend:
+          type: number
+        avgRoas:
+          type: number
+        openNotifications:
+          type: integer
+        topPerformingCampaign:
+          $ref: "#/components/schemas/Campaign"
+
+    ActivityFeedItem:
+      type: object
+      required: [id, type, description, createdAt]
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+        description:
+          type: string
+        entityType:
+          type: ["string", "null"]
+        entityId:
+          type: ["integer", "null"]
+        userName:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+
+    PerformanceMetrics:
+      type: object
+      required: [period, spendByDay, revenueByDay, callsBookedByDay, dealsWonByDay]
+      properties:
+        period:
+          type: string
+        spendByDay:
+          type: array
+          items:
+            $ref: "#/components/schemas/MetricByDay"
+        revenueByDay:
+          type: array
+          items:
+            $ref: "#/components/schemas/MetricByDay"
+        callsBookedByDay:
+          type: array
+          items:
+            $ref: "#/components/schemas/MetricByDay"
+        dealsWonByDay:
+          type: array
+          items:
+            $ref: "#/components/schemas/MetricByDay"
+
+    MetricByDay:
+      type: object
+      required: [date, value]
+      properties:
+        date:
+          type: string
+        value:
+          type: number
+
+    MetaConfig:
+      type: object
+      required: [appId, redirectUri, scopes]
+      properties:
+        appId:
+          type: string
+        redirectUri:
+          type: string
+        scopes:
+          type: string
+
+    MetaStatus:
+      type: object
+      required: [connected]
+      properties:
+        connected:
+          type: boolean
+        accountId:
+          type: string
+        scopes:
+          type: string
+        expiresAt:
+          type: ["string", "null"]
+
+    MetaCampaign:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        status:
+          type: string
+        objective:
+          type: string
+        daily_budget:
+          type: string
+        spend:
+          type: string
+
+    MetaCampaignsResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/MetaCampaign"
+        error:
+          type: object
+          properties:
+            message:
+              type: string

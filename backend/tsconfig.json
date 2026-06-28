@@ -1,0 +1,18 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "incremental": true,
+    "tsBuildInfoFile": ".tsbuildinfo",
+    "outDir": "dist",
+    "rootDir": "src",
+    "types": ["node"],
+    "noEmit": true,
+    "paths": {
+      "@/db": ["./src/db/index.ts"],
+      "@/db/*": ["./src/db/*"],
+      "@/validation": ["./src/validation/index.ts"],
+      "@/validation/*": ["./src/validation/*"]
+    }
+  },
+  "include": ["src"]
+}

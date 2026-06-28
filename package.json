@@ -1,0 +1,21 @@
+{
+  "name": "agencyos",
+  "version": "0.0.0",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "preinstall": "node -e \"const ua=process.env.npm_config_user_agent||''; if(!ua.includes('pnpm')){console.error('Use pnpm instead'); process.exit(1)}\"",
+    "dev": "pnpm -r --parallel run dev",
+    "build": "pnpm run typecheck && pnpm -r --if-present run build",
+    "typecheck": "pnpm --filter @agencyos/frontend run typecheck && pnpm --filter @agencyos/backend run build",
+    "codegen": "pnpm --filter @agencyos/backend run codegen",
+    "db:up": "docker compose up -d",
+    "db:down": "docker compose down",
+    "db:push": "pnpm --filter @agencyos/backend run db:push",
+    "db:seed": "pnpm --filter @agencyos/backend run db:seed"
+  },
+  "devDependencies": {
+    "prettier": "^3.8.4",
+    "typescript": "~5.9.3"
+  }
+}

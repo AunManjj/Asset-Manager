@@ -1,0 +1,682 @@
+You are a senior software architect and full-stack engineer.
+
+Your task is to build a COMPLETE production-ready SaaS application from scratch.
+
+Do NOT generate placeholders or incomplete code.
+
+The project must be properly structured, modular, scalable, and production-ready.
+
+===========================================================
+PROJECT
+===========================================================
+
+Build a modern SaaS dashboard for a digital marketing agency.
+
+The application will allow agencies to manage:
+
+• Clients
+• Facebook Ads Campaigns
+• Setter activities
+• Closer activities
+• Revenue
+• AI insights
+• Reports
+• Slack notifications
+• Automation using n8n
+
+===========================================================
+TECH STACK
+===========================================================
+
+Frontend
+---------
+Next.js 15
+React
+TypeScript
+Tailwind CSS
+Framer Motion
+React Three Fiber
+Three.js
+Recharts
+React Hook Form
+Zod
+Axios
+
+Backend
+---------
+FastAPI
+Python
+SQLAlchemy
+Alembic
+JWT Authentication
+RBAC
+Pydantic
+
+Database
+---------
+PostgreSQL
+
+Automation
+---------
+n8n Community Edition (Free)
+
+AI
+---------
+OpenAI API
+
+Hosting
+---------
+Frontend should be deployable on Vercel.
+
+Backend should be deployable on AWS EC2.
+
+Database should work with PostgreSQL.
+
+===========================================================
+PROJECT STRUCTURE
+===========================================================
+
+Create TWO folders only.
+
+frontend/
+
+backend/
+
+===========================================================
+FRONTEND STRUCTURE
+===========================================================
+
+Frontend must contain
+
+README.md
+
+The README should explain:
+
+• installation
+• npm install
+• environment variables
+• npm run dev
+• production build
+• deployment
+
+Create folders like
+
+app/
+
+components/
+
+hooks/
+
+services/
+
+utils/
+
+types/
+
+styles/
+
+public/
+
+assets/
+
+===========================================================
+BACKEND STRUCTURE
+===========================================================
+
+Backend must contain
+
+README.md
+
+The backend README should include
+
+Python installation
+
+Virtual environment
+
+pip install
+
+requirements.txt
+
+How to configure .env
+
+How to run server
+
+How migrations work
+
+How JWT works
+
+How to connect PostgreSQL
+
+How to connect Meta API
+
+How to connect Slack
+
+How to connect OpenAI
+
+How to connect n8n
+
+Folder structure
+
+===========================================================
+
+backend/
+
+api/
+
+models/
+
+schemas/
+
+services/
+
+routers/
+
+middleware/
+
+database/
+
+core/
+
+utils/
+
+auth/
+
+alembic/
+
+sql/
+
+workflows/
+
+===========================================================
+DATABASE
+===========================================================
+
+Inside
+
+backend/sql/
+
+Create ONE SQL file.
+
+database.sql
+
+This file must contain ALL SQL queries required for the entire project.
+
+Include:
+
+CREATE TABLE
+
+Indexes
+
+Foreign Keys
+
+Constraints
+
+Sample seed data
+
+Views
+
+Triggers if required
+
+Everything should exist in ONE SQL FILE.
+
+===========================================================
+AUTHENTICATION
+===========================================================
+
+Implement JWT Authentication.
+
+Implement Role Based Access Control.
+
+Roles
+
+Admin
+
+Client
+
+Setter
+
+Closer
+
+===========================================================
+PERMISSIONS
+===========================================================
+
+Admin
+
+Can see everything.
+
+Can create users.
+
+Can delete users.
+
+Can create clients.
+
+Can connect Meta account.
+
+Can create campaigns.
+
+Can assign setters.
+
+Can assign closers.
+
+Can manage everything.
+
+Client
+
+Can only see their own company.
+
+Own campaigns.
+
+Own revenue.
+
+Own reports.
+
+Own AI insights.
+
+Setter
+
+Can ONLY see
+
+their own outreach
+
+their own calls booked
+
+their own activities
+
+their own KPIs
+
+Cannot view other setters.
+
+Cannot view closers.
+
+Closer
+
+Can ONLY see
+
+their own calls
+
+their own revenue
+
+their own KPIs
+
+their own AI coaching
+
+Cannot view others.
+
+===========================================================
+DASHBOARD
+===========================================================
+
+Create an extremely modern dashboard.
+
+Dark Theme
+
+Glassmorphism
+
+Animated Cards
+
+Floating Cards
+
+Blur Effects
+
+Gradient Background
+
+Modern SaaS UI
+
+Responsive
+
+Beautiful Charts
+
+3D Hero Section
+
+React Three Fiber background
+
+Particle animations
+
+Smooth transitions
+
+Framer Motion animations
+
+===========================================================
+PAGES
+===========================================================
+
+Login
+
+Dashboard
+
+Clients
+
+Campaigns
+
+Facebook Ads
+
+Setter Dashboard
+
+Closer Dashboard
+
+Reports
+
+Slack
+
+Settings
+
+Profile
+
+===========================================================
+FACEBOOK ADS
+===========================================================
+
+Implement Meta Graph API integration.
+
+Flow
+
+1
+
+Connect Facebook
+
+↓
+
+OAuth Login
+
+↓
+
+Receive Access Token
+
+↓
+
+Store Access Token
+
+↓
+
+Store Ad Account ID
+
+↓
+
+Fetch Campaigns
+
+↓
+
+Fetch Adsets
+
+↓
+
+Fetch Ads
+
+↓
+
+Fetch Insights
+
+Admin can
+
+Create Campaign
+
+Create Adsets
+
+Create Ads
+
+Update Campaign
+
+Pause Campaign
+
+Resume Campaign
+
+Fetch insights
+
+Store data inside PostgreSQL.
+
+Frontend should read database instead of directly calling Meta every time.
+
+===========================================================
+DATABASE TABLES
+===========================================================
+
+Users
+
+Clients
+
+Campaigns
+
+Adsets
+
+Ads
+
+Insights
+
+SetterActivities
+
+CloserActivities
+
+Revenue
+
+Reports
+
+Notifications
+
+SlackLogs
+
+AIInsights
+
+===========================================================
+AI FEATURES
+===========================================================
+
+Use OpenAI API.
+
+Generate
+
+Campaign Summary
+
+Performance Analysis
+
+Weekly Insights
+
+Loss Debrief
+
+Call Coaching
+
+Revenue Analysis
+
+Recommendations
+
+AI Chat Panel
+
+===========================================================
+REPORTS
+===========================================================
+
+Generate
+
+Weekly PDF
+
+Monthly PDF
+
+Campaign Summary
+
+Revenue Summary
+
+AI Summary
+
+===========================================================
+SLACK
+===========================================================
+
+Slack integration.
+
+Send alerts when
+
+Campaign performance drops
+
+Revenue decreases
+
+Setter misses target
+
+Closer misses target
+
+Weekly reports generated
+
+===========================================================
+AUTOMATION
+===========================================================
+
+Use n8n Community Edition (Free).
+
+Do NOT build a custom scheduler.
+
+Instead, prepare the backend and provide n8n workflow definitions.
+
+Inside backend/workflows/
+
+Create JSON workflow exports for:
+
+1. Hourly Meta Ads Sync
+   - Cron trigger (every hour)
+   - Fetch campaigns, ad sets, ads, insights
+   - Save to PostgreSQL
+
+2. Daily KPI Check
+   - Every morning
+   - Compare KPIs
+   - Generate OpenAI summary
+   - Send Slack notification
+
+3. Lost Call Analysis
+   - Webhook trigger
+   - Receive call notes
+   - OpenAI analyzes objections
+   - Save AI insight
+   - Send Slack message
+
+4. Weekly PDF Report
+   - Weekly Cron
+   - Generate PDF
+   - Email client
+   - Save report
+   - Notify Slack
+
+5. Campaign Performance Monitor
+   - Every 4 hours
+   - Compare last 28 days
+   - Detect anomalies
+   - AI explanation
+   - Slack alert
+
+Document how to import these workflows into n8n Community Edition.
+
+===========================================================
+API
+===========================================================
+
+Create complete REST APIs.
+
+Authentication
+
+Users
+
+Clients
+
+Campaigns
+
+Ads
+
+Insights
+
+Revenue
+
+Reports
+
+AI
+
+Slack
+
+Meta
+
+===========================================================
+CODE QUALITY
+===========================================================
+
+Use
+
+SOLID principles
+
+Dependency Injection
+
+Clean Architecture
+
+Reusable components
+
+Reusable services
+
+Type safety
+
+Validation
+
+Proper error handling
+
+Logging
+
+===========================================================
+ENVIRONMENT VARIABLES
+===========================================================
+
+Create .env.example files for both frontend and backend.
+
+Include every required variable.
+
+===========================================================
+README FILES
+===========================================================
+
+Frontend README
+
+Explain
+
+installation
+
+development
+
+production
+
+deployment
+
+Backend README
+
+Explain
+
+installation
+
+database
+
+migrations
+
+JWT
+
+RBAC
+
+Meta API setup
+
+Slack setup
+
+OpenAI setup
+
+n8n setup
+
+AWS deployment
+
+===========================================================
+OUTPUT
+===========================================================
+
+Generate the COMPLETE project.
+
+Every file should be created.
+
+No placeholders.
+
+No TODOs.
+
+No mock implementations unless absolutely required by external APIs.
+
+The application should compile successfully after installing dependencies and configuring environment variables.
+
+Generate a production-quality project with proper architecture, comments where necessary, and clean code throughout.
